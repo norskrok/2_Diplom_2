@@ -4,11 +4,10 @@ import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 
-import static io.restassured.RestAssured.given;
-
 public class BaseTest {
 
     protected String accessToken;
+    protected UserClient userClient = new UserClient();
 
     @Before
     public void setUp() {
@@ -18,12 +17,7 @@ public class BaseTest {
     @After
     public void teardown() {
         if (accessToken != null) {
-            given()
-                    .header("Authorization", accessToken)
-                    .when()
-                    .delete("/api/auth/user")
-                    .then()
-                    .statusCode(202);
+            userClient.delete(accessToken);
         }
     }
 }
