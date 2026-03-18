@@ -1,5 +1,7 @@
 package praktikum;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.junit.Test;
 import static org.hamcrest.Matchers.equalTo;
@@ -10,6 +12,8 @@ public class GetUserOrdersTest extends BaseTest {
     private final OrderClient orderClient = new OrderClient();
 
     @Test
+    @DisplayName("Получение списка заказов авторизованного пользователя")
+    @Description("Проверка успешного получения истории заказов для залогиненного пользователя")
     public void getOrdersWithAuthorizationSuccess() {
 
         User user = new User("list_test_" + System.currentTimeMillis() + "ivan@yandex.ru", "1234", "Ivan");
@@ -25,6 +29,8 @@ public class GetUserOrdersTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Получение списка заказов без авторизации")
+    @Description("Проверка ошибки при попытке получить список заказов без токена авторизации")
     public void getOrdersWithoutAuthorizationReturnsError() {
 
         orderClient.getUserOrders(null)
