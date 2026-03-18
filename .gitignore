@@ -40,3 +40,5 @@ build/
 
 .allure/
 target/
+*.iml
+.idea/
