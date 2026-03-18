@@ -39,6 +39,17 @@ public class UserLoginTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Логин без пароля")
+    @Description("Проверка ошибки при попытке входа без указания пароля")
+    public void shouldNotLoginWithoutPassword() {
+        User userWithoutPassword = new User(user.getEmail(), null);
+        userClient.login(userWithoutPassword)
+                .assertThat()
+                .statusCode(401)
+                .body("message", equalTo("email or password are incorrect"));
+    }
+
+    @Test
     @DisplayName("Логин с неверным паролем")
     @Description("Проверка ошибки авторизации при использовании корректного email, но неверного пароля")
     public void shouldNotLoginWithIncorrectPassword() {
@@ -63,6 +74,17 @@ public class UserLoginTest extends BaseTest {
         response.assertThat()
                 .statusCode(401)
                 .body("success", equalTo(false))
+                .body("message", equalTo("email or password are incorrect"));
+    }
+
+    @Test
+    @DisplayName("Логин без email")
+    @Description("Проверка ошибки при попытке входа без email")
+    public void shouldNotLoginWithoutEmail() {
+        User userWithoutEmail = new User(null, "123456");
+        userClient.login(userWithoutEmail)
+                .assertThat()
+                .statusCode(401)
                 .body("message", equalTo("email or password are incorrect"));
     }
 }

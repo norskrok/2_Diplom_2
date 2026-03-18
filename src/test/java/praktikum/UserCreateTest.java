@@ -36,4 +36,40 @@ public class UserCreateTest extends BaseTest {
                 .assertThat().statusCode(403)
                 .body("message", equalTo("User already exists"));
     }
+
+    @Test
+    @DisplayName("Создание пользователя без имени")
+    @Description("Проверка получения ошибки 403 при попытке регистрации без указания обязательного поля name")
+    public void createUserWithoutNameReturnsError() {
+        User user = new User("ivan@yandex.ru", "password123", "");
+        userClient.create(user)
+                .assertThat()
+                .statusCode(403)
+                .body("success", equalTo(false))
+                .body("message", equalTo("Email, password and name are required fields"));
+    }
+
+    @Test
+    @DisplayName("Создание пользователя без email")
+    @Description("Проверка ошибки 403 при отсутствии поля email")
+    public void createUserWithoutEmailReturnsError() {
+        User user = new User(null, "123456", "Ivan");
+        userClient.create(user)
+                .assertThat()
+                .statusCode(403)
+                .body("success", equalTo(false))
+                .body("message", equalTo("Email, password and name are required fields"));
+    }
+
+    @Test
+    @DisplayName("Создание пользователя без пароля")
+    @Description("Проверка ошибки 403 при отсутствии поля password")
+    public void createUserWithoutPasswordReturnsError() {
+        User user = new User("ivan_" + System.currentTimeMillis() + "@yandex.ru", null, "Ivan");
+        userClient.create(user)
+                .assertThat()
+                .statusCode(403)
+                .body("success", equalTo(false))
+                .body("message", equalTo("Email, password and name are required fields"));
+    }
 }

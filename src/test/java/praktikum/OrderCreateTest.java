@@ -34,18 +34,6 @@ public class OrderCreateTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Создание пользователя без имени")
-    @Description("Проверка получения ошибки 403 при попытке регистрации без указания обязательного поля name")
-    public void createUserWithoutNameReturnsError() {
-        User user = new User("ivan@yandex.ru", "password123", "");
-        userClient.create(user)
-                .assertThat()
-                .statusCode(403)
-                .body("success", equalTo(false))
-                .body("message", equalTo("Email, password and name are required fields"));
-    }
-
-    @Test
     @DisplayName("Создание заказа без ингредиентов")
     @Description("Проверка получения ошибки 400 при попытке создать заказ с пустым списком ингредиентов")
     public void createOrderWithoutIngredientsReturnsError() {
